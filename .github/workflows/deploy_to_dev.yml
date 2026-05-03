@@ -5,7 +5,8 @@ on:
       - dev
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/cnb-congress-reports-service
+  IMAGE_OWNER: ${{ vars.IMAGE_OWNER }}
+  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
 
 jobs:
   build-and-push:
@@ -26,19 +27,24 @@ jobs:
           java-version: 21
 
       - name: Build JAR
-        run: |
-          ./mvnw clean package
+        run: ./mvnw clean package
 
       - name: Login to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+          docker login $REGISTRY -u ${{ github.actor }} --password-stdin
 
       - name: Build Docker image
         run: |
-          docker build -t $IMAGE_NAME:latest .
+          docker build \
+            -t $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:latest \
+            -t $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:${{ github.sha }} \
+            .
 
       - name: Push Docker image
         run: |
-          docker push $IMAGE_NAME:latest
+          docker push $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:latest
+          docker push $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:${{ github.sha }}
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
