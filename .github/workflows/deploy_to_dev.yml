@@ -54,9 +54,12 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
+          envs: GITHUB_TOKEN,REGISTRY,IMAGE_OWNER,IMAGE_NAME,NEW_IMAGE_TAG
           script: |
+            echo "$GITHUB_TOKEN" | docker login $REGISTRY -u github-actions --password-stdin
             cd ~/cnb_congress
             echo "Deploying version: $NEW_IMAGE_TAG"
             REPORTS_TAG=$NEW_IMAGE_TAG docker compose pull
             REPORTS_TAG=$NEW_IMAGE_TAG docker compose up -d
+            docker logout $REGISTRY
             echo "Deploy complete"
