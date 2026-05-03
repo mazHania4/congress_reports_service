@@ -54,11 +54,12 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
+          envs: NEW_IMAGE_TAG
           script: |
             set -e
             cd ~/cnb_congress
             
-            OLD_TAG=$(docker inspect --format='{{.Config.Image}}' $SERVICE 2>/dev/null | cut -d':' -f2 || true)
+            OLD_TAG=$(docker inspect --format='{{.Config.Image}}' reports-service 2>/dev/null | cut -d':' -f2 || true)
             echo "Current running version: $OLD_TAG"
       
             echo "Deploying version: $NEW_IMAGE_TAG"
