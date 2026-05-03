@@ -2,7 +2,7 @@ FROM eclipse-temurin:21-jre-jammy
 
 WORKDIR /reports_service
 
-COPY reports_service-0.0.1-SNAPSHOT.jar reports_service.jar
+COPY service.jar service.jar
 
 EXPOSE 8080
 

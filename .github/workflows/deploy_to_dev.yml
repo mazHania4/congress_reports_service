@@ -30,6 +30,9 @@ jobs:
       - name: Build JAR
         run: ./mvnw clean package
 
+      - name: Prepare artifact
+        run: cp target/*.jar service.jar
+
       - name: Login to GHCR
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | \
