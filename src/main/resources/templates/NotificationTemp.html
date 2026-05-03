@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Emagazines Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f8fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background: #ffffff;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333333;
+        }
+        h2 {
+            color: #444444;
+            margin-top: 20px;
+        }
+        p {
+            color: #555555;
+            line-height: 1.5;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999999;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Title</h1>
+
+    <!-- Título dinámico -->
+    <h2 th:text="${title}"></h2>
+
+    <!-- Cuerpo de mensaje variable -->
+    <p th:utext="${message}"></p>
+
+    <div class="footer">
+        <p>© 2026 Title. Todos los derechos reservados.</p>
+    </div>
+</div>
+</body>
+</html>
