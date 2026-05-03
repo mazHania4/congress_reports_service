@@ -5,6 +5,7 @@ on:
       - dev
 
 env:
+  REGISTRY: ghcr.io
   IMAGE_OWNER: ${{ vars.IMAGE_OWNER }}
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
 
@@ -37,13 +38,13 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:latest \
-            -t $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:${{ github.sha }} \
+            -t $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:dev-latest \
+            -t $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:dev-${{ github.sha }} \
             .
 
       - name: Push Docker image
         run: |
-          docker push $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:latest
+          docker push $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:dev-latest
           docker push $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:${{ github.sha }}
 
       - name: Deploy to EC2
