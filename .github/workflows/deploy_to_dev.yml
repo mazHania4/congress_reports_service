@@ -48,7 +48,7 @@ jobs:
       - name: Push Docker image
         run: |
           docker push $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:dev-latest
-          docker push $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:${{ github.sha }}
+          docker push $REGISTRY/$IMAGE_OWNER/$IMAGE_NAME:dev-${{ github.sha }}
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
