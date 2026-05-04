@@ -79,13 +79,13 @@ jobs:
             } 
             
             echo "Deploying version: $NEW_IMAGE_TAG"
-            sed -i "s/^${ENV_TAG_NAME}=.*/${ENV_TAG_NAME}=${OLD_TAG}/" .env
+            sed -i "s/^${ENV_TAG_NAME}=.*/${ENV_TAG_NAME}=${NEW_IMAGE_TAG}/" .env
             docker compose pull $SERVICE_NAME
             docker compose up -d $SERVICE_NAME
 
             echo "Waiting for service to start..."
-            sleep 60
-            if curl --retry 5 --retry-delay 3 -f http://localhost:80/reports/actuator/health; then
+            sleep 4m
+            if curl --retry 5 --retry-delay 20 -f http://localhost:80/reports/actuator/health; then
               echo "Deploy OK"
               docker logout $REGISTRY
             else
