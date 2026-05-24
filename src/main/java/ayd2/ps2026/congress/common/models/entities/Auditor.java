@@ -28,7 +28,6 @@ public abstract class Auditor {
      * Identificador único de la entidad. Se genera automáticamente utilizando
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false, unique = true)
     private Integer id;
 
@@ -42,7 +41,6 @@ public abstract class Auditor {
      * Fecha y hora de la última actualización del registro.
      */
     @Column
-    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     /**
@@ -57,11 +55,5 @@ public abstract class Auditor {
     @Column
     private LocalDateTime deactivateAt;
 
-    @PrePersist
-    protected void onCreate() {
-        if (this.createdAt == null) {
-            this.createdAt = LocalDateTime.now();
-        }
-    }
 
 }

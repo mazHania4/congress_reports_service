@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ayd2.ps2026.congress.auth.users.models.AppUser;
+import ayd2.ps2026.congress.models.auth.AppUser;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
@@ -62,7 +62,7 @@ public class JwtGeneratorService {
         // Agregar el rol del usuario en las autorities
         claims.put(CLAIM_USER_ID, appUser.getId());
         claims.put(CLAIM_USER_USERNAME, appUser.getUsername());
-        claims.put(CLAIM_NAME_USER_ROLE, appUser.getRole().name());
+        claims.put(CLAIM_NAME_USER_ROLE, appUser.getRoles().stream().toList().getFirst());
 
         long validityMillis = Duration.ofMillis(parseDuration(jwtConfig.getJwtExpiresIn())).toMillis();
         // Generar el token
