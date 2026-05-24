@@ -1,15 +1,12 @@
 package ayd2.ps2026.congress.models.works;
 
 import ayd2.ps2026.congress.common.models.entities.Auditor;
-import ayd2.ps2026.congress.models.activity.enums.ActivityType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 

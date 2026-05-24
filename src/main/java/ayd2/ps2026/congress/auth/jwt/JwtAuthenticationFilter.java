@@ -53,9 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @throws IOException      Si ocurre un error de E/S.
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain)
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         // Saltar validación si es endpoint público
@@ -96,7 +94,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      *
 
      */
-    protected boolean isPublicEndpoint(HttpServletRequest request) {
+    public boolean isPublicEndpoint(HttpServletRequest request) {
         String requestPath = request.getRequestURI();
         String requestMethod = request.getMethod(); // <-- ESTA LÍNEA
         AntPathMatcher matcher = new AntPathMatcher();
@@ -129,7 +127,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @return Un {@code Optional} que contiene el token JWT si está presente y
      *         es válido.
      */
-    protected Optional<String> extractTokenFromHeader(HttpServletRequest request) {
+    public Optional<String> extractTokenFromHeader(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader("Authorization"))
                 .filter(header -> header.startsWith("Bearer "))
                 .map(header -> header.substring(7));
@@ -144,7 +142,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      *         válido.
      * @throws InvalidTokenException
      */
-    protected Optional<UserDetails> validateToken(String jwt) {
+    public Optional<UserDetails> validateToken(String jwt) {
 
         String username = jwtTokenInspector.extractUsername(jwt);
         String userType = jwtTokenInspector.extractUserType(jwt);
