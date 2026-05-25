@@ -54,7 +54,6 @@ public enum PublicEndpointsEnum {
     //LOGIN_WITH_MFA(null, "/api/v1/login/mfa"),
 
     //ALL_CATEGORIES(HttpMethod.GET, "/api/v1/category/**"),
-
     // Rutas publicas de Activity
     SWAGGER_UI(null, "/swagger-ui/**"),
     HEALTH_CHECK(HttpMethod.GET, "/actuator/health"),

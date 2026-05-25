@@ -31,7 +31,9 @@ jobs:
           java-version: 21
 
       - name: Build JAR
-        run: ./mvnw clean package
+        run: |
+          chmod +x mvnw
+          ./mvnw clean package
 
       - name: Prepare artifact
         run: cp target/*.jar service.jar
@@ -51,13 +53,16 @@ jobs:
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           envs: GITHUB_TOKEN,REGISTRY,IMAGE_OWNER,SERVICE_NAME,NEW_IMAGE_TAG,ENV_TAG_NAME
           script: |
-            echo "$GITHUB_TOKEN" | docker login $REGISTRY -u github-actions --password-stdin
+            set -e
+            printf "%s" "$GITHUB_TOKEN" | docker login $REGISTRY -u ${{ github.actor }} --password-stdin
             cd ~/cnb_congress
             echo "Deploying version: $NEW_IMAGE_TAG"
             sed -i "s/^${ENV_TAG_NAME}=.*/${ENV_TAG_NAME}=${NEW_IMAGE_TAG}/" .env

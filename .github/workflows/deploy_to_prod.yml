@@ -31,7 +31,9 @@ jobs:
           java-version: 21
 
       - name: Build JAR
-        run: ./mvnw clean package
+        run: |
+          chmod +x mvnw
+          ./mvnw clean package
 
       - name: Prepare artifact
         run: cp target/*.jar service.jar
@@ -51,6 +53,8 @@ jobs:
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
@@ -59,6 +63,8 @@ jobs:
           script: |
             set -e
             cd ~/cnb_congress
+            
+            printf "%s" "$GITHUB_TOKEN" | docker login $REGISTRY -u ${{ github.actor }} --password-stdin
             
             OLD_TAG=$(grep "^${ENV_TAG_NAME}=" .env | cut -d'=' -f2 || true)
             echo "Current running version: $OLD_TAG"
@@ -84,7 +90,7 @@ jobs:
             docker compose up -d $SERVICE_NAME
 
             echo "Waiting for service to start..."
-            sleep 4m
+            sleep 60s
             if curl --retry 5 --retry-delay 20 -f http://localhost:80/reports/actuator/health; then
               echo "Deploy OK"
               docker logout $REGISTRY
